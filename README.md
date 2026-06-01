@@ -18,7 +18,7 @@ How to Run the Project
 1. Clone or Download
 Download the project as a ZIP or clone it using Git
 
-hosting link: https://deanna1moon.github.io/Assignment2
+hosting link: https://deanna1moon.github.io/WebGroup/index.html
 
 Tool / Framework Purpose#
 HTML5 Page structure CSS3 Styling and layout JavaScript (ES6) Dynamic functionality LocalStorage API In-browser data storage Google Fonts Typography (Playfair Display) GitHub Version control and backup
