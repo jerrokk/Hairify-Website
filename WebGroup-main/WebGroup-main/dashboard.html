@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+	background-size: cover; 
+
+    background-repeat: no-repeat; 
+	ackground-position: center; 
+    background-attachment: fixed;
+	  
+      margin: 0;
+      padding: 0;
+    }
+         /* Navigation Bar */
+      .navbar {
+          background-color: rgba(255, 0, 0, 0.9);
+          padding: 1em;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+      .navbar .logo {
+          font-size: 1.5em;
+          color: #fff;
+          font-weight: bold;
+      }
+      .nav-links {
+          list-style: none;
+          display: flex;
+          gap: 1em;
+      }
+      .nav-links li {
+          display: inline;
+      }
+      .nav-links a {
+          text-decoration: none;
+
+          color: white; /* Ensuring white text */
+          font-weight: bold;
+          padding: 14px 25px;
+          transition: 0.3s;
+          transform: translateY(-6%) scale(3.1);
+          border-radius: 5px;
+          box-shadow: #fff;
+      }
+      .nav-links a:hover {
+          transform: translateY(-6%) scale(3.1);
+          background-color:rgba(255, 192, 203, 0.736) ;
+      }
+	   
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+   /* Background Slideshow */
+  .background-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+  }
+  .slide.active {
+    opacity: 0.5;
+  }
+
+    /* Dashboard Layout */
+    .dashboard {
+      display: grid;
+      grid-template-areas:
+        "header header"
+        "ask bottle"
+        "profit state";
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      grid-area: header;
+      background-color:  rgba(255, 0, 0, 0.8);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 0;
+      font-size: 28px;
+    }
+
+    /* Sections for the cards */
+    .ask-section, .bottle-img, .profit-section, .state-section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+    .ask-section:hover, .bottle-img:hover, .profit-section:hover, .state-section:hover {
+      transform: scale(1.02);
+    }
+
+    .ask-section { grid-area: ask; }
+    .bottle-img { grid-area: bottle; }
+    .profit-section { grid-area: profit; }
+    .state-section { grid-area: state; }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #f40009;
+    }
+
+    /* Buttons & Inputs */
+    .search-container {
+      margin-bottom: 15px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    button {
+      background: #f40009;
+      color: #fff;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f9f9f9;
+    }
+
+    /* Stats & Pie Charts */
+    #statsTables {
+      margin-top: 10px;
+    }
+    .chart {
+      margin-top: 10px;
+    }
+
+    /* Toggling stats display */
+    .hidden {
+      display: none;
+    }
+
+    /* Scrollable user invoices */
+    #userInvoiceResults {
+      max-height: 250px; 
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+
+
+  <nav class="navbar">
+    <div class="logo">HAIRIFY</div>
+    <ul class="nav-links">
+      <li><a href="products.html">Home</a></li>
+      <li><a href="AboutUs.html">About Us</a></li>
+      <li><a href="Mycart.html" class="active">My Cart</a></li>
+	   <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- Background Slideshow -->
+ <div class="background-slideshow">
+  <div class="slide" style="background-image: url('Images/slide1.jpg');"></div>
+  <div class="slide" style="background-image: url('Images/slide2.jpg');"></div>
+  <div class="slide" style="background-image: url('Images/slide3.jpg');"></div>
+  <div class="slide" style="background-image: url('Images/slide4.jpg');"></div>
+  <div class="slide" style="background-image: url('Images/slide5.jpg');"></div>
+</div>
+
+  <div class="dashboard">
+    <h1>Dashboard</h1>
+
+    <!-- ask-section: user frequency tables -->
+    <div class="ask-section">
+      <h2>User Frequency </h2>
+      <button id="statsBtn" onclick="toggleUserStats()">Show User Statistics</button>
+      <div id="statsTables" class="hidden"><!-- Tables go here --></div>
+    </div>
+
+    <!-- bottle-img: user frequency pie charts -->
+    <div class="bottle-img">
+   
+      <div id="statsCharts" class="hidden"><!-- Pie charts go here --></div>
+    </div>
+
+    <!-- profit-section: invoice search by TRN -->
+    <div class="profit-section">
+      <h2>Invoice Search</h2>
+      <div class="search-container">
+        <input type="text" id="trnSearch" placeholder="Enter TRN">
+        <button onclick="ShowInvoices()">Search</button>
+      </div>
+      <div id="invoiceResults"></div>
+    </div>
+
+    <!-- state-section: user invoices for the logged in user only -->
+    <div class="state-section">
+      <h2>User Invoices (Current User)</h2>
+      <div id="userInvoiceResults"></div>
+    </div>
+  </div>
+
+  <script>
+    console.log("RegisterData:", localStorage.getItem('RegisterData'));
+    console.log("Invoices:", localStorage.getItem('invoices'));
+    console.log("loggedInTRN:", localStorage.getItem('loggedInTRN'));
+
+    /*******************************************************
+     * Slideshow
+     *******************************************************/
+    let currentSlide = 0;
+  
+    function startSlideshow() {
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    
+    // Show first slide immediately
+    slides[0].classList.add('active');
+    
+    // Hide all other slides
+    for (let i = 1; i < totalSlides; i++) {
+      slides[i].classList.remove('active');
+    }
+    
+    // Set interval for changing slides
+    setInterval(() => {
+      // Hide current slide
+      slides[currentSlide].classList.remove('active');
+      
+      // Move to next slide
+      currentSlide = (currentSlide + 1) % totalSlides;
+      
+      // Show next slide
+      slides[currentSlide].classList.add('active');
+    }, 4000); // Change every 4 seconds
+  }
+
+    window.onload = function() {
+      startSlideshow();
+      GetUserInvoices(); // load the signed in user's invoices initially
+    };
+
+    /* Toggle show/hide user frequency stats*/
+    let statsVisible = false;
+    function toggleUserStats() {
+      statsVisible = !statsVisible;
+      const btn = document.getElementById('statsBtn');
+      const tables = document.getElementById('statsTables');
+      const charts = document.getElementById('statsCharts');
+
+      if (statsVisible) {
+        btn.textContent = "Hide User Statistics";
+        tables.classList.remove('hidden');
+        charts.classList.remove('hidden');
+        ShowUserFrequency();
+      } else {
+        btn.textContent = "Show User Statistics";
+        tables.classList.add('hidden');
+        charts.classList.add('hidden');
+      }
+    }
+
+    function ShowUserFrequency() {
+      const users = JSON.parse(localStorage.getItem('RegisterData')) || [];
+      const genderCounts = { Male: 0, Female: 0, Other: 0 };
+      const ageGroups = { '18-25': 0, '26-35': 0, '36-50': 0, '50+': 0 };
+
+      users.forEach(u => {
+        const g = u.gender || 'Other';
+        if (genderCounts[g] !== undefined) {
+          genderCounts[g]++;
+        } else {
+          genderCounts.Other++;
+        }
+
+        const age = parseInt(u.age);
+        if (age >= 18 && age <= 25) {
+          ageGroups['18-25']++;
+        } else if (age <= 35) {
+          ageGroups['26-35']++;
+        } else if (age <= 50) {
+          ageGroups['36-50']++;
+        } else {
+          ageGroups['50+']++;
+        }
+      });
+
+      // Build the table portion
+      const tablesDiv = document.getElementById('statsTables');
+      tablesDiv.innerHTML = `
+        <div>
+          <h3>Gender Distribution</h3>
+          <table>
+            <thead><tr><th>Gender</th><th>Count</th></tr></thead>
+            <tbody>
+              ${Object.entries(genderCounts).map(([gg, cc]) => `
+                <tr><td>${gg}</td><td>${cc}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:10px;">
+          <h3>Age Group Distribution</h3>
+          <table>
+            <thead><tr><th>Age Range</th><th>Count</th></tr></thead>
+            <tbody>
+              ${Object.entries(ageGroups).map(([rng, ct]) => `
+                <tr><td>${rng}</td><td>${ct}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      // Build the pie chart portion
+      const chartsDiv = document.getElementById('statsCharts');
+      chartsDiv.innerHTML = ''; // clear
+
+      const genderChart = createPieChart(
+        genderCounts,
+        'Gender Distribution',
+        ['#ff6384', '#36a2eb', '#ffce56']
+      );
+      chartsDiv.appendChild(genderChart);
+
+      const ageChart = createPieChart(
+        ageGroups,
+        'Age Group Distribution',
+        ['#4bc0c0', '#9966ff', '#ff9f40', '#8ac249']
+      );
+      chartsDiv.appendChild(ageChart);
+    }
+
+    /*createPieChart: helper for conic-gradient pie*/
+    function createPieChart(data, title, colors) {
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.flexDirection = 'column';
+      container.style.alignItems = 'center';
+      container.style.margin = '10px';
+
+      const titleEl = document.createElement('h3');
+      titleEl.style.color = 'red';
+      titleEl.textContent = title;
+      container.appendChild(titleEl);
+
+      const chartEl = document.createElement('div');
+      chartEl.style.width = '200px';
+      chartEl.style.height = '200px';
+      chartEl.style.borderRadius = '50%';
+      chartEl.style.overflow = 'hidden';
+      chartEl.style.position = 'relative';
+
+      const total = Object.values(data).reduce((sum, val) => sum + val, 0);
+      let cumulativePercent = 0;
+      const gradientStops = Object.entries(data).map(([_, value], i) => {
+        const percent = total === 0 ? 0 : (value / total) * 100;
+        const stop = `${colors[i % colors.length]} ${cumulativePercent}% ${cumulativePercent += percent}%`;
+        return stop;
+      });
+      chartEl.style.background = `conic-gradient(${gradientStops.join(', ')})`;
+      container.appendChild(chartEl);
+
+      // Legend
+      const legend = document.createElement('div');
+      legend.style.display = 'flex';
+      legend.style.flexWrap = 'wrap';
+      legend.style.justifyContent = 'center';
+      legend.style.gap = '8px';
+      legend.style.marginTop = '10px';
+
+      Object.entries(data).forEach(([lbl, val], i) => {
+        const percent = total === 0 ? 0 : Math.round((val / total) * 100);
+        const legendItem = document.createElement('div');
+        legendItem.style.display = 'flex';
+        legendItem.style.alignItems = 'center';
+        legendItem.style.fontSize = '12px';
+
+        const colorBox = document.createElement('span');
+        colorBox.style.width = '12px';
+        colorBox.style.height = '12px';
+        colorBox.style.borderRadius = '3px';
+        colorBox.style.marginRight = '5px';
+        colorBox.style.backgroundColor = colors[i % colors.length];
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(
+          document.createTextNode(`${lbl}: ${val} (${percent}%)`)
+        );
+        legend.appendChild(legendItem);
+      });
+      container.appendChild(legend);
+
+      return container;
+    }
+
+    /*ShowInvoices: search a specific TRN, otherwise no results*/
+    function ShowInvoices() {
+      const trn = document.getElementById('trnSearch').value.trim();
+      const allInv = JSON.parse(localStorage.getItem('invoices')) || {};
+      const resDiv = document.getElementById('invoiceResults');
+
+      if (!trn) {
+        // No typed TRN => no invoices
+        resDiv.innerHTML = "<p>No invoices found.</p>";
+        return;
+      }
+
+      // If TRN typed, try to find them
+      const found = allInv[trn] || [];
+      if (found.length === 0) {
+        resDiv.innerHTML = "<p>No invoices found.</p>";
+        return;
+      }
+
+      resDiv.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Invoice ID</th><th>Date</th><th>Tax</th><th>Discount</th><th>Final</th></tr>
+          </thead>
+          <tbody>
+            ${found.map(iv => `
+              <tr>
+                <td>${iv.id}</td>
+                <td>${iv.date}</td>
+                <td>$${iv.tax}</td>
+                <td>-$${iv.discount}</td>
+                <td>$${iv.finalTotal || iv.total}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    /* GetUserInvoices: strictly for loggedInTRN*/
+    function GetUserInvoices() {
+      const trn = localStorage.getItem('loggedInTRN');
+      const invoices = JSON.parse(localStorage.getItem('invoices')) || {};
+      const div = document.getElementById('userInvoiceResults');
+
+      if (!trn) {
+        div.innerHTML = "<p>No TRN found. Are you logged in?</p>";
+        return;
+      }
+
+      const userInvoices = invoices[trn] || [];
+      if (userInvoices.length === 0) {
+        div.innerHTML = "<p>No invoices for this user.</p>";
+        return;
+      }
+
+      div.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Invoice ID</th><th>Date</th><th>Total</th><th>Tax</th><th>Discount</th><th>Final</th></tr>
+          </thead>
+          <tbody>
+            ${userInvoices.map(i => `
+              <tr>
+                <td>${i.id}</td>
+                <td>${i.date}</td>
+                <td>$${i.total}</td>
+                <td>$${i.tax}</td>
+                <td>-$${i.discount}</td>
+                <td>$${i.finalTotal}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+  </script>
+</body>
+</html>

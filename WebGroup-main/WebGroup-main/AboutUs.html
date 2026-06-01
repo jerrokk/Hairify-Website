@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us - HAIRIFY</title>
+
+  <style>
+    /* Reset and Font */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background-color: rgba(255, 0, 0, 0.9);
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      font-size: 1.5em;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1em;
+    }
+
+    .nav-links li {
+      display: inline;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      padding: 14px 25px;
+      transition: 0.3s;
+      transform: translateY(-6%) scale(3.1);
+      border-radius: 5px;
+    }
+
+    .nav-links a:hover {
+      transform: translateY(-6%) scale(3.1);
+      background-color: rgba(255, 192, 203, 0.736);
+    }
+
+    /* Page Styling */
+    body {
+      background-color: #f5f5f5;
+      background-image: url('Images/back2.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 0;
+      margin: 0;
+    }
+
+    h1 {
+      margin-top: 60px;
+      text-align: center;
+      padding: 15px;
+      font-size: 2em;
+    }
+
+    /* Info Section */
+    .info-section {
+      margin-top: 30px;
+    }
+
+    .info-container {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+ 
+      padding: 20px;
+
+    }
+
+    .info-container a {
+      color: red;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .info-container a:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">HAIRIFY</div>
+    <ul class="nav-links">
+      <li><a href="products.html">Home</a></li>
+      <li><a href="AboutUs.html" class="active">About Us</a></li>
+      <li><a href="Mycart.html">My Cart</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <h1>About Us</h1>
+  <center><img src="Images/harify.png" alt="Our Team" width="300px"></center>
+
+  <!-- Info Section -->
+  <section class="info-section">
+    <div class="info-container">
+      <p><strong>Full name & ID:</strong> Deanna Brown - 2407306</p><br>
+      <p><strong>Full name & ID:</strong> Amanda White - 2205841</p><br>
+      <p><strong>Full name & ID:</strong> Kevin Barnaby - 2004408</p><br>
+      <p><strong>Full name & ID:</strong> Jermaine Lewis - 2307120</p><br>
+
+      <p><strong>Module Code:</strong> CIT2011</p>
+      <p><strong>Assignment Name:</strong> Group Assignment - Web Programming</p>
+      <p><strong>Class Schedule:</strong> Monday 12 PM</p><br>
+
+      <p>
+         View our 
+        <a href="https://www.canva.com/design/DAGknd-1Jis/Shj6taRV6ND4_TajKzpbOA/edit?utm_content=DAGknd-1Jis&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank">
+          Wireframe Design & Sitemap
+        </a>
+      </p><br>
+
+      <p>
+         Visit our hosted project: 
+        <a href="https://deanna1moon.github.io/WebGroup/index.html" target="_blank">
+          HAIRIFY GitHub Page
+        </a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>

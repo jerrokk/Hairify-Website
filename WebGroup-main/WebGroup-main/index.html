@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAIRIFY - Login</title>  
+
+  <style>
+    /*CSS for the body of the login page*/
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+    /*Transition for the content of the login page*/
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+      /* CSS for hero section*/
+    .hero {
+      background-color: rgba(255, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 40vh;
+      margin-top: -310px;
+    }
+
+    .hero h1 {
+      margin-bottom: -100px;
+      color: #fff;
+    }
+
+    .hero img {
+      position: absolute;
+      height: 48vh;
+      bottom: 3%;
+      display: inline;
+      border-radius: 4px;
+      transform: translateY(-50%);
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease-in-out;
+      margin-right: 30%;
+    }
+
+    /* login Container design*/
+    .login-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      height: 350px;
+      text-align: center;
+      margin-left: 25%;
+      transform: translateX(100%);
+      opacity: 0;
+      animation: slideIn 1s ease-in-out forwards 0.5s;
+    }
+    /*Transition for login Container*/
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .form-group {
+      margin-bottom: 1em;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.3em;
+      transition: color 0.3s ease-in-out;
+    }
+
+    label:hover {
+      color: red;
+    }
+
+    input {
+      width: 95%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: box-shadow 0.3s ease-in-out;
+    }
+
+    input:focus {
+      box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+      outline: none;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .error-msg {
+      color: red;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <h1>--HAIRIFY--</h1>
+    <img src="Images/harify.png" alt="logo"> 
+  </section>
+  <!--Login HTML Code-->
+  <div class="login-container">
+    <h2>LOG IN</h2>
+    <div id="error-msg" class="error-msg"></div>
+     <!--TRN Input code-->
+    <div class="form-group">
+      <label for="trn">TRN</label>
+      <input type="text" id="username" placeholder="123-456-789" pattern="\d{3}-\d{3}-\d{3}" title="Enter TRN in the format 123-456-789">
+    </div>
+    <!--Password Input Code-->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+
+    <button class="login-btn" onclick="handleLogin()">Login</button>
+    <p>Register to get Member's Only Discounts! <a href="registration.html">Register</a></p>
+    <p><a href="reset.html">Forgot your password?</a></p>
+  </div>
+
+  <!--JS Login functions-->
+  <script>
+    let loginAttempts = 0;
+
+    function handleLogin() {
+      const trn = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('error-msg');
+
+      if (!trn || !password) {
+        errorMsg.textContent = "Please enter both TRN and password.";
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('RegisterData')) || [];
+      const user = users.find(u => u.trn === trn && u.password === password);
+      /*User Validation Function*/
+      if (user) {
+        localStorage.setItem('loggedInTRN', user.trn);
+        localStorage.setItem('loginAttempts', 0);
+        alert(`Welcome back, ${user.name}!`);
+        window.location.href = "products.html";
+      } else {
+        loginAttempts++;
+        errorMsg.textContent = `Invalid TRN or password. Attempt ${loginAttempts} of 3.`;
+
+        if (loginAttempts >= 3) {
+          alert("Too many failed login attempts. Redirecting...");
+          window.location.href = "error.html";
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

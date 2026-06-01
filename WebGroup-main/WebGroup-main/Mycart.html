@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HAIRIFY - My Cart</title>
+
+  <style>
+  
+       /* Navigation Bar */
+      .navbar {
+          background-color: rgba(255, 0, 0, 0.9);
+          padding: 1em;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+      .navbar .logo {
+          font-size: 1.5em;
+          color: #fff;
+          font-weight: bold;
+      }
+      .nav-links {
+          list-style: none;
+          display: flex;
+          gap: 1em;
+      }
+      .nav-links li {
+          display: inline;
+      }
+      .nav-links a {
+          text-decoration: none;
+
+          color: white; /* Ensuring white text */
+          font-weight: bold;
+          padding: 14px 25px;
+          transition: 0.3s;
+          transform: translateY(-6%) scale(3.1);
+          border-radius: 5px;
+          box-shadow: #fff;
+      }
+      .nav-links a:hover {
+          transform: translateY(-6%) scale(3.1);
+          background-color:rgba(255, 192, 203, 0.736) ;
+      }
+	   
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+  
+
+h1 {
+  margin-top: 50px; /* Ensures it's not hidden behind navbar */
+  text-align: center;
+ 
+
+  padding: 15px;
+
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 2em;
+}
+
+
+.logo {
+    font-size: 30px;
+    color:  red;
+}
+
+
+
+
+
+    body {
+    font-family: Arial, sans-serif;
+    background-image: url('Images/back2.jpg');
+	background-size: cover; 
+    background-repeat: no-repeat; 
+	ackground-position: center; 
+    background-attachment: fixed;
+	   
+    }
+
+    .cart-container {
+      position: relative;
+      max-width: 1200px;
+      background-color: #fff;
+      margin: -60px auto 0 auto;
+      border-radius: 8px;
+      padding: 2em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .cart-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1em;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1em;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1em;
+      background-color: #fff;
+      align-items: flex-start;
+      position: relative;
+    }
+    .cart-item img {
+      width: 100px;
+      height: auto;
+      border-radius: 4px;
+    }
+    .cart-item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .item-name {
+      font-size: 1.1em;
+      margin-bottom: 0.2em;
+    }
+    .item-desc {
+      font-size: 0.85em;
+      color: #666;
+    }
+    .item-quantity {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5em;
+      background-color: #f3f3f3;
+      padding: 0.3em 0.6em;
+      border-radius: 999px;
+      width: fit-content;
+      gap: 0.5em;
+    }
+    .qty-display {
+      font-weight: bold;
+    }
+    .quantity-btn {
+      background-color: transparent;
+      color: #000;
+      border: none;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0.2em 0.5em;
+      border-radius: 999px;
+      transition: background 0.3s;
+    }
+    .quantity-btn:hover {
+      background-color: #ddd;
+    }
+    .cart-item-price {
+      text-align: right;
+      min-width: 100px;
+    }
+    .item-original-price {
+      color: #888;
+      text-decoration: line-through;
+      font-size: 0.85em;
+    }
+    .cart-summary {
+      margin-top: 2em;
+      padding: 1em;
+      background-color: #f9f9f9;
+      border-top: 2px solid #ccc;
+    }
+    .cart-summary p {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5em 0;
+    }
+    .checkout-section {
+      text-align: center;
+      margin-top: 1em;
+    }
+    .checkout-btn, .clear-btn, .close-btn {
+      background-color: red;
+      color: black;
+      border: none;
+      border-radius: 4px;
+      padding: 0.7em 1em;
+      font-size: 1em;
+      margin: 0.5em;
+      cursor: pointer;
+    }
+    .checkout-btn:hover, .clear-btn:hover, .close-btn:hover {
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+
+
+  <nav class="navbar">
+    <div class="logo">HAIRIFY</div>
+    <ul class="nav-links">
+      <li><a href="products.html">Home</a></li>
+      <li><a href="AboutUs.html">About Us</a></li>
+      <li><a href="Mycart.html" class="active">My Cart</a></li>
+	   <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </nav>
+
+
+    <h1>MY CART</h1><br><br><br><br>
+
+
+  <div class="cart-container">
+    <div class="cart-list" id="cart-items"></div>
+
+    <div class="cart-summary" id="cart-summary"></div>
+
+    <div class="checkout-section">
+      <button class="clear-btn" onclick="clearCart()">Clear All</button>
+      <button class="close-btn" onclick="window.location.href='products.html'">Close</button>
+      <button class="checkout-btn" id="checkoutBtn">Check Out</button>
+    </div>
+  </div>
+
+  <script>
+	    // Ensure the user is logged in before allowing cart access
+  const loggedInTRN = localStorage.getItem('loggedInTRN');
+  if (!loggedInTRN) {
+    alert("You must be logged in to access your cart.");
+    window.location.href = "index.html";
+  }
+// This array tracks which cart items are selected for checkout
+let selectedItems = [];
+
+// Load cart data from localStorage and display on the page
+function loadCart() {
+  // Retrieve cart from localStorage or set to empty array if none found
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  // Initialize selectedItems to true for each item (default: all selected)
+  selectedItems = cart.map(() => true);
+
+  // Get the cart container element
+  const container = document.getElementById('cart-items');
+
+  // If cart is empty, show a message. Otherwise, clear container for rendering
+  container.innerHTML = cart.length === 0 ? "<p>Your cart is empty.</p>" : "";
+
+  // Loop through each item and render its HTML
+  cart.forEach((item, index) => {
+    const itemDiv = document.createElement('div');
+    itemDiv.classList.add('cart-item');
+
+    // Ensure image path starts with "images/"
+    const imagePath = item.image.toLowerCase().startsWith("images/") ? item.image : `images/${item.image}`;
+
+    // Calculate original price with markup (used for showing discount)
+    const originalPrice = (item.price * 1.2).toFixed(2);
+
+    // Calculate total price for current quantity
+    const total = (item.price * item.quantity).toFixed(2);
+
+    // Set inner HTML of the cart item
+    itemDiv.innerHTML = `
+      <input type="checkbox" class="cart-checkbox" data-index="${index}" checked>
+      <img src="${imagePath}" alt="${item.name}">
+      <div class="cart-item-info">
+        <p class="item-name"><strong>${item.name}</strong></p>
+        <p class="item-desc">Hair care product - best for nourishing and growth.</p>
+        <div class="item-quantity">
+          <button class="quantity-btn" onclick="decrementQuantity(${index})">-</button>
+          <span class="qty-display">${item.quantity}</span>
+          <button class="quantity-btn" onclick="incrementQuantity(${index})">+</button>
+        </div>
+        <div>
+          <a href="#" onclick="removeItem(${index})" style="color: #007185;">Delete</a>
+        </div>
+      </div>
+      <div class="cart-item-price">
+        <p><strong>$${total}</strong></p>
+        <p class="item-original-price">List: $${originalPrice}</p>
+      </div>
+    `;
+
+    // Append the item to the cart list
+    container.appendChild(itemDiv);
+  });
+
+  // Listen for checkbox changes and update the selected items
+  document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      const index = parseInt(this.getAttribute('data-index'));
+      selectedItems[index] = this.checked;
+      updateSummary();
+    });
+  });
+
+  // After rendering all items, update the cart summary totals
+  updateSummary();
+}
+
+// Recalculate and display subtotal, discount, tax, and total
+function updateSummary() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let subtotal = 0;
+
+  // Calculate subtotal only for selected items
+  cart.forEach((item, i) => {
+    if (selectedItems[i]) {
+      subtotal += item.price * item.quantity;
+    }
+  });
+
+const discount = subtotal > 0 ? subtotal * 0.1 : 0; // 10% discount on any subtotal
+
+
+  // Apply 15% tax to subtotal
+  const tax = subtotal * 0.15;
+
+  // Final total after discount and tax
+  const total = subtotal + tax - discount;
+
+  // Update the HTML with the new values
+  const summaryDiv = document.getElementById('cart-summary');
+  summaryDiv.innerHTML = `
+    <p><strong>Subtotal:</strong><span>$${subtotal.toFixed(2)}</span></p>
+    <p><strong>Discount:</strong><span>-$${discount.toFixed(2)}</span></p>
+    <p><strong>Tax (15%):</strong><span>$${tax.toFixed(2)}</span></p>
+    <p><strong>Total:</strong><span><strong>$${total.toFixed(2)}</strong></span></p>
+  `;
+}
+
+// Increase the quantity of an item and update the cart
+function incrementQuantity(index) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart[index].quantity++;
+  localStorage.setItem('cart', JSON.stringify(cart));
+  loadCart(); // Refresh the cart display
+}
+
+// Decrease the quantity of an item. Remove it if quantity reaches 0
+function decrementQuantity(index) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart[index].quantity--;
+  if (cart[index].quantity <= 0) cart.splice(index, 1);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  loadCart(); // Refresh the cart display
+}
+
+// Remove a specific item from the cart based on index
+function removeItem(index) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart.splice(index, 1); // Remove item at specified index
+  localStorage.setItem('cart', JSON.stringify(cart));
+  loadCart(); // Refresh the cart display
+}
+
+// Clear the entire cart with confirmation
+function clearCart() {
+  if (confirm("Are you sure you want to clear your cart?")) {
+    localStorage.removeItem('cart');
+    loadCart(); // Refresh the cart display to show it's empty
+  }
+}
+
+// Proceed to checkout: filters selected items and redirects
+function checkout() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  // Filter only the selected items using selectedItems array
+  const filteredCart = cart.filter((_, i) => selectedItems[i]);
+
+  // Prevent checkout with no selected items
+  if (!filteredCart.length) return alert("Please select at least one item.");
+
+  // Save selected items to 'checkoutCart' and redirect
+  localStorage.setItem('checkoutCart', JSON.stringify(filteredCart));
+  window.location.href = "Checkout.html";
+}
+
+// Attach event listeners once the DOM is fully loaded
+document.getElementById('checkoutBtn').addEventListener('click', checkout);
+window.addEventListener('DOMContentLoaded', loadCart);
+
+  </script>
+</body>
+</html>

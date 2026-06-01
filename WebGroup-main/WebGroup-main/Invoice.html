@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #fff;
+      color: #000;
+    }
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: red;
+    }
+    .info-section {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .info-box {
+      width: 30%;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    table th, table td {
+      border: 1px solid #000;
+      padding: 10px;
+      text-align: center;
+    }
+    .totals {
+      margin-top: 20px;
+      float: right;
+      width: 40%;
+    }
+    .totals div {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+    .signature {
+      margin-top: 80px;
+      float: right;
+      text-align: right;
+      font-style: italic;
+    }
+    .email-button {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+    }
+    button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-header">
+    <div class="logo">HAIRIFY</div>
+  </div>
+
+  <div class="info-section">
+    <div class="info-box">
+      <strong>BILLING TO:</strong><br>
+      <div id="billTo"></div>
+    </div>
+    <div class="info-box">
+      <strong>DATE PURCHASED:</strong><br>
+      <div id="invoiceDate"></div>
+    </div>
+    <div class="info-box">
+      <strong>ORDER NO: </strong><br>
+      <div id="orderNumber"></div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>QTY</th>
+        <th>DESCRIPTION</th>
+        <th>UNIT PRICE</th>
+        <th>AMOUNT</th>
+      </tr>
+    </thead>
+    <tbody id="invoiceItems"></tbody>
+  </table>
+
+  <div class="totals" id="totalsBox"></div>
+
+  <div class="email-button">
+    <button onclick="sendReceipt()">Send Receipt to Email</button>
+  </div>
+
+  <script>
+    function generateOrderNumber() {
+      const saved = localStorage.getItem('orderNumber');
+      if (saved) return saved;
+      const randomOrder = 'HF' + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('orderNumber', randomOrder);
+      return randomOrder;
+    }
+
+    function loadInvoice() {
+      const cart = JSON.parse(localStorage.getItem('checkoutCart')) || [];
+      const checkoutDetails = JSON.parse(localStorage.getItem('checkoutDetails')) || {};
+      const name = checkoutDetails.fullname || 'Customer';
+      const address = checkoutDetails.address || 'Address not provided';
+      const date = new Date();
+      const orderNumber = generateOrderNumber();
+
+      document.getElementById('billTo').innerHTML = `${name}<br>${address}`;
+      document.getElementById('invoiceDate').innerText = date.toLocaleDateString();
+      document.getElementById('orderNumber').innerText = orderNumber;
+
+      let total = 0;
+      const tbody = document.getElementById('invoiceItems');
+      tbody.innerHTML = '';
+
+      cart.forEach(item => {
+        const subTotal = item.price * item.quantity;
+        total += subTotal;
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.quantity}</td>
+            <td>${item.name}</td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td>$${subTotal.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+
+      const tax = total * 0.15;
+
+  const discount = total > 0 ? total * 0.1 : 0; // 10% discount on any subtotal
+      const grandTotal = total + tax - discount;
+
+      document.getElementById('totalsBox').innerHTML = `
+        <div><span>Subtotal:</span><span>$${total.toFixed(2)}</span></div>
+        <div><span>Tax (15%):</span><span>$${tax.toFixed(2)}</span></div>
+        <div><span>Discount:</span><span>-$${discount.toFixed(2)}</span></div>
+        <div><strong>TOTAL:</strong><strong>$${grandTotal.toFixed(2)}</strong></div>
+      `;
+    }
+
+    function sendReceipt() {
+      const email = prompt("Enter your email to receive the receipt:");
+      if (email && email.includes("@")) {
+        console.log(`Sending receipt to: ${email}`);
+        alert(`Receipt has been sent to ${email}`);
+      } else if (email) {
+        alert("Please enter a valid email address.");
+      }
+    }
+
+    loadInvoice();
+  </script>
+</body>
+</html>

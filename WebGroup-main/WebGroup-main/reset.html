@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Password - HAIRIFY</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .hero {
+      background-color: rgba(255, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 45vh;
+      margin-top: -310px;
+    }
+
+    .hero h1 {
+      color: #fff;
+      font-size: xx-large;
+    }
+
+    .reset-container {
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+
+    .reset-container h2 {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 85%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: red;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>--HAIRIFY--</h1>
+  </section>
+
+  <div class="reset-container">
+    <h2>Reset Password</h2>
+    <input type="text" id="trn" placeholder="Enter your TRN">
+    <input type="password" id="new-password" placeholder="Enter new password">
+    <input type="password" id="confirm-password" placeholder="Confirm new password">
+    <div id="error-msg" class="error"></div>
+    <button onclick="resetPassword()">Reset Password</button>
+  </div>
+
+  <script>
+function resetPassword() {
+  const trn = document.getElementById('trn').value.trim();
+  const newPassword = document.getElementById('new-password').value.trim();
+  const confirmPassword = document.getElementById('confirm-password').value.trim();
+  const errorMsg = document.getElementById('error-msg');
+
+  errorMsg.textContent = '';
+
+  if (!trn || !newPassword || !confirmPassword) {
+    errorMsg.textContent = "All fields are required.";
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    errorMsg.textContent = "Passwords do not match.";
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('RegisterData')) || [];
+  const userIndex = users.findIndex(u => u.trn === trn);
+
+  if (userIndex === -1) {
+    errorMsg.textContent = "TRN not found.";
+    return;
+  }
+
+  users[userIndex].password = newPassword;
+  localStorage.setItem('RegisterData', JSON.stringify(users)); // ✅ fixed key name
+  alert("Password has been reset successfully.");
+  window.location.href = "index.html";
+}
+
+  </script>
+
+</body>
+</html>

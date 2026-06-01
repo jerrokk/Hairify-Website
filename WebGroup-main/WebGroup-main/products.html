@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HAIRIFY - Products</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    body {
+      background-color: rgba(128, 128, 128, 0.156);
+      background-image: url('Images/back2.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .navbar {
+      background-color: rgba(255, 0, 0, 0.9);
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar .logo {
+      font-size: 1.5em;
+      color: #fff;
+      font-weight: bold;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1em;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      padding: 14px 25px;
+      transition: 0.3s;
+      border-radius: 5px;
+    }
+    .nav-links a:hover {
+      background-color: rgba(255, 192, 203, 0.736);
+    }
+
+    .hero {
+      position: relative;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .slideshow-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .hero-text {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1.5em;
+    }
+
+    .products-container {
+      max-width: 1200px;
+      margin: -50px auto 20px auto;
+      background-color: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1em;
+    }
+
+    .product-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      text-align: center;
+      padding: 1em;
+      transition: 0.3s;
+    }
+
+    .product-card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-image img {
+      width: 90%;
+      height: auto;
+    }
+
+    .btn-add-cart {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn-add-cart:hover {
+      box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 2em;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+
+    .modal-content img {
+      width: 80%;
+      max-height: 300px;
+      object-fit: contain;
+      margin-bottom: 1em;
+      border-radius: 10px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      font-size: 1.5em;
+      color: #888;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">HAIRIFY</div>
+    <ul class="nav-links">
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="AboutUs.html">About Us</a></li>
+      <li><a href="Mycart.html">My Cart</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="slideshow-container">
+      <div class="slide fade"><img src="Images/hair33.jpg" alt="Hair 1"></div>
+      <div class="slide fade"><img src="Images/hair21.jpg" alt="Hair 2"></div>
+      <div class="slide fade"><img src="Images/hair.jpg" alt="Hair 3"></div>
+    </div>
+    <div class="hero-text"><h1>SHOP FOR THE BEST HAIR PRODUCTS!</h1></div>
+  </section>
+
+  <div class="products-container">
+    <div class="product-grid" id="product-grid"></div>
+  </div>
+
+  <div id="product-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeModal()">&times;</span>
+      <div id="modal-product-details"></div>
+    </div>
+  </div>
+
+  <script>
+    const allProducts = [
+      { name: "Mielle's Rosemary Mint Oil", price: 11, image: "Images/mielle.jpg", description: "Invigorating blend of rosemary and mint." },
+      { name: "Wild Growth Hair Oil", price: 7, image: "Images/hair1.jpg", description: "Boost your hair's natural growth." },
+      { name: "At One argon oil", price: 9, image: "Images/hair1.png", description: "Nourish your strands with argon oil." },
+      { name: "As I am-Leave in Conditioner", price: 9, image: "Images/hair2.jpg", description: "Soften and strengthen your hair." },
+      { name: "As I am-Coconut Cowash", price: 10, image: "Images/hair3.png", description: "Gentle coconut cleansing cowash." },
+      { name: "Jamaican Mango & Lime-Black Castor Oil", price: 5, image: "Images/hair6.jpg", description: "Pure Jamaican black castor oil." },
+      { name: "Monat Shampoo+ Conditioner", price: 5, image: "Images/hair7.png", description: "2-in-1 luxury hair care combo." },
+      { name: "Tresemme", price: 6, image: "Images/hair8.png", description: "Salon-quality everyday shampoo." },
+    ];
+
+    localStorage.setItem("AllProducts", JSON.stringify(allProducts));
+
+    function displayProducts() {
+      const container = document.getElementById("product-grid");
+      const products = JSON.parse(localStorage.getItem("AllProducts")) || [];
+
+      products.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.setAttribute("data-name", product.name);
+        card.setAttribute("data-price", product.price);
+        card.setAttribute("data-description", product.description);
+        card.setAttribute("data-image", product.image);
+        card.setAttribute("onclick", "showProductDetails(this)");
+
+        card.innerHTML = `
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <p class="price">$${product.price}</p>
+            <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart('${product.name}', ${product.price}, '${product.image}');">Add to Cart</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function showProductDetails(card) {
+      const name = card.getAttribute("data-name");
+      const price = card.getAttribute("data-price");
+      const image = card.getAttribute("data-image");
+      const description = card.getAttribute("data-description");
+
+      document.getElementById("modal-product-details").innerHTML = `
+        <h2>${name}</h2>
+        <img src="${image}" alt="${name}">
+        <p class="price">$${price}</p>
+        <p>${description}</p>
+        <button class="btn-add-cart" onclick="addToCart('${name}', ${price}, '${image}'); closeModal();">Add to Cart</button>
+      `;
+
+      document.getElementById("product-modal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("product-modal").style.display = "none";
+    }
+
+    function addToCart(name, price, image) {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!loggedInUser) {
+        alert("You must log in first.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existingItem = cart.find(item => item.name === name);
+
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ name, price, image, quantity: 1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${name} has been added to your cart!`);
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("product-modal");
+      if (event.target === modal) closeModal();
+    }
+
+    function showSlides() {
+      const slides = document.querySelectorAll(".slide");
+      slides.forEach(slide => slide.classList.remove("active"));
+      slideIndex = (slideIndex % slides.length) + 1;
+      slides[slideIndex - 1].classList.add("active");
+      setTimeout(showSlides, 4000);
+    }
+
+    let slideIndex = 0;
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const loggedInTRN = localStorage.getItem("loggedInTRN");
+      if (!loggedInTRN) {
+        alert("You must log in first.");
+        window.location.href = "index.html";
+      }
+      displayProducts();
+      showSlides();
+    });
+  </script>
+</body>
+</html>
